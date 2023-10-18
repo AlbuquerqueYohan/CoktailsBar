@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cocktails Bar{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des cocktails <img class="logo" src="/image/cocktail.svg"> </h1>
+
+        <div class="container">
+                <div class="row justify-content-between">
+                    {% for cocktail in cocktails %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <img src="/image/cocktail.svg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cocktail.label }}</h5>
+                            <p class="card-text">{{ cocktail.description }}</p>
+                            <a href="#" class="btn btn-primary">Modifier</a>
+                        </div>
+                    </div>
+                </div>
+                    {% endfor %}
+            </div>
+    </div>
+
+{% endblock %}
