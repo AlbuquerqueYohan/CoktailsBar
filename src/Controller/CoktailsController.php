@@ -66,6 +66,8 @@ class CoktailsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $cocktail->setUpdatedAt(new \DateTimeImmutable());
             $this->em->flush();
 
             return $this->redirectToRoute('cocktails');
