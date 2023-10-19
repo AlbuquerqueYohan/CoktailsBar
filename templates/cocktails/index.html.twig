@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ cocktail.label }}</h5>
                             <p class="card-text">{{ cocktail.description }}</p>
-                            <a href="#" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path('update_cocktail', {id: cocktail.id}) }}" class="btn btn-primary">Modifier</a>
                         </div>
                     </div>
                 </div>
