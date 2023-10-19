@@ -60,7 +60,7 @@ class CoktailsController extends AbstractController
     }
 
     #[Route('/cocktails/update/{id}', name: 'update_cocktail')]
-    public function update(Int $id, Cocktail $cocktail, Request $request): Response
+    public function update(int $id, Cocktail $cocktail, Request $request): Response
     {
         $form = $this->createForm(CocktailType::class, $cocktail);
         $form->handleRequest($request);
@@ -76,4 +76,14 @@ class CoktailsController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/cocktails/delete/{id}', name: 'delete_cocktail')]
+    public function delete(int $id, Cocktail $cocktail): Response
+    {
+        $this->em->remove($cocktail);
+        $this->em->flush();
+
+        return $this->redirectToRoute('cocktails');
+    }
+
 }
