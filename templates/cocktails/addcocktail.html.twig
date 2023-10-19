@@ -6,10 +6,6 @@
 
     <h1>Ajouter une nouvelle création <img class="logo" src="/image/cocktail.svg"> </h1>
 
-    {{ form_start(form) }}
-        {{ form_row(form.label) }}
-        {{ form_row(form.description) }}
-        <button class="btn btn-primary">Ajouter</button>
-    {{ form_end(form) }}
+    {{ include ('cocktails/__form_addcocktail.html.twig') }}
 
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,14 +18,16 @@ class AddCocktailType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'value' => '',
-                    'placeholder' => 'Nom du cocktail'],
+                    'placeholder' => 'Nom du cocktail',
+                    'class' => 'form'],
             ])
             ->add('description', TextType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
                     'value' => '',
-                    'placeholder' => 'Décrivez vôtre cocktail'],
+                    'placeholder' => 'Décrivez vôtre cocktail',
+                    'class' => 'form'],
             ]);
     }
 

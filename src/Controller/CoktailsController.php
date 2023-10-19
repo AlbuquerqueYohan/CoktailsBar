@@ -29,7 +29,7 @@ class CoktailsController extends AbstractController
     public function index(): Response
     {
         $cocktails = $this->cocktailRepository->findAll();
-        return $this->render('coktails/index.html.twig', [
+        return $this->render('cocktails/index.html.twig', [
             'cocktails' => $cocktails,
         ]);
     }
@@ -53,7 +53,7 @@ class CoktailsController extends AbstractController
             return $this->redirectToRoute('cocktails');
         }
 
-        return $this->render('coktails/addcocktail.html.twig', [
+        return $this->render('cocktails/addcocktail.html.twig', [
             'form' => $form->createView(),
         ]);
     }
