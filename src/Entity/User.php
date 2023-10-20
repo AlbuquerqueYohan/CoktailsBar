@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -34,6 +36,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated_at = null;
+
+    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Cocktail::class)]
+    private Collection $cocktails;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+        $this->cocktails = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,6 +137,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(\DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cocktail>
+     */
+    public function getCocktails(): Collection
+    {
+        return $this->cocktails;
+    }
+
+    public function addCocktail(Cocktail $cocktail): static
+    {
+        if (!$this->cocktails->contains($cocktail)) {
+            $this->cocktails->add($cocktail);
+            $cocktail->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCocktail(Cocktail $cocktail): static
+    {
+        if ($this->cocktails->removeElement($cocktail)) {
+            // set the owning side to null (unless already changed)
+            if ($cocktail->getCreator() === $this) {
+                $cocktail->setCreator(null);
+            }
+        }
 
         return $this;
     }

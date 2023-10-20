@@ -26,6 +26,16 @@ class Cocktail
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cocktails', targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $creator = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,5 +87,21 @@ class Cocktail
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): static
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function setAuthor(?\Symfony\Component\Security\Core\User\UserInterface $getUser)
+    {
     }
 }

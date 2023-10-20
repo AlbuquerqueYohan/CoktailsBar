@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\AddUserType;
 use App\Form\LoginClientType;
+use App\Form\UpdateUserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,9 +45,6 @@ class UserController extends AbstractController
 
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
-            $user->setCreatedAt(new \DateTimeImmutable());
-            $user->setUpdatedAt(new \DateTimeImmutable());
-            $user->setRoles(['ROLE_USER']);
 
             $this->em->persist($user);
 
@@ -59,4 +57,44 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/user/list', name: 'list_user')]
+    public function listUser()
+    {
+        $users = $this->userRepository->findAll();
+
+        return $this->render('user/list.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    #[Route('/user/update/{id}', name: 'update_user')]
+    public function update(int $id, User $user, Request $request): Response
+    {
+        $form = $this->createForm(UpdateUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setUpdatedAt(new \DateTimeImmutable());
+            $this->em->flush();
+
+            return $this->redirectToRoute('cocktails');
+        }
+
+        return $this->render('user/updateuser.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/user/delete/{id}', name: 'delete_user')]
+    public function delete(int $id, User $user): Response
+    {
+        $this->em->remove($user);
+        $this->em->flush();
+
+        return $this->redirectToRoute('cocktails');
+    }
+
 }

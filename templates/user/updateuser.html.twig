@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cocktails Bar{% endblock %}
+
+{% block body %}
+
+    <h1>Modifier la création {{ user.username}} <img class="logo" src="/image/cocktail.svg"> </h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.username, {'value': user.username}) }}
+    {{ form_row(form.roles)}}
+    <button class="submit">Modifier</button>
+    {{ form_end(form) }}
+
+{% endblock %}

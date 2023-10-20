@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cocktail;
+use App\Entity\User;
 use App\Form\AddCocktailType;
 use App\Form\CocktailType;
 use App\Repository\CocktailRepository;
@@ -41,11 +42,15 @@ class CoktailsController extends AbstractController
         $cocktail = new Cocktail();
         $form = $this->createForm(AddCocktailType::class, $cocktail);
 
+        if(!$this->getUser()) return $this->redirectToRoute('app_cocktail');
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $cocktail->setCreatedAt(new \DateTimeImmutable());
             $cocktail->setUpdatedAt(new \DateTimeImmutable());
+
+            $cocktail->setCreator($this->getUser());
 
             $this->em->persist($cocktail);
 

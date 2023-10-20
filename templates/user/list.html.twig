@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion utilisateur{% endblock %}
+
+{% block body %}
+        {% if app.user %}
+                <h1>Bonjour {{ app.user.userIdentifier }} </h1>
+        {% endif %}
+
+        <section class="cart-section pt-100 pb-100">
+                <div class="container">
+                        {% for user in users %}
+                        <div class="row">
+                                <div class="col-lg-12">
+                                        <div class="cart-wrapper">
+                                                <div class="cart-table table-responsive">
+                                                        <table class="table">
+                                                                <tbody>
+                                                                <tr>
+                                                                   <td class="remove">
+                                                                           <form method="post" action="{{ path('delete_user', {id: user.id}) }}"
+                                                                                 style="display: inline-block" onsubmit="return confirm('Vous allez supprimer le user')">
+                                                                                   <input type="hidden" name="_method" value="delete">
+                                                                                   <input type="hidden" name="_token" value="{{ csrf_token('delete') }}">
+                                                                                   <button class="fas fa-trash-alt">Supprimer</button>
+                                                                           </form>
+                                                                   </td>
+                                                                   <td class="update">
+                                                                       <form method="post" action="{{ path('update_user', {id: user.id}) }}"
+                                                                             style="display: inline-block" onsubmit="return confirm('Vous allez modifier le user')">
+                                                                           <input type="hidden" name="_method" value="update">
+                                                                           <button class="fas fa-trash-alt">Modifier</button>
+                                                                       </form>
+                                                                   </td>
+                                                                   <td class="thumbnail-title">
+                                                                           <span class="title">{{ user.username }}</span>
+                                                                   </td>
+                                                                   <td class="subtotal">
+                                                                           {% if user.roles == '["ROLES_USER"]' %}
+                                                                                   User
+                                                                           {% else %}
+                                                                                   Admin
+                                                                           {% endif %}
+                                                                   </td>
+                                                                </tr>
+                                                                </tbody>
+                                                        </table>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        {% endfor %}
+                </div>
+        </section><!--====== End Cart section ======-->
+{% endblock %}
